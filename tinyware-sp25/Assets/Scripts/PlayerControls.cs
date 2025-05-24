@@ -13,11 +13,13 @@ public class PlayerControls : MonoBehaviour
 
     public bool IsFacingRight { get; private set; }
     public bool IsJumping { get; private set; }
+    public bool CanClimb { get; set; }
+    public bool IsClimbing { get; private set; }
     public float LastOnGroundTime { get; private set; }
-
-    private float _move;
     public float LastPressedJumpTime { get; private set; }
     public float AttackTimer { get; private set; }
+
+    private Vector2 _moveInput;
 
     public static PlayerControls Instance;
     public delegate void LitChangeDelegate(bool value);
@@ -25,17 +27,14 @@ public class PlayerControls : MonoBehaviour
 
     [Header("Gravity")]
     public float gravityScale;
-    [Space(5)]
-    public float fastFallGravityMult;
-    public float maxFastFallSpeed;
+    public float maxFallSpeed;
 
-    [Header("Run")]
+    [Header("Movement")]
     public float runMaxSpeed;
     public float runAccelAmount;
     public float runDeccelAmount;
-
-    [Header("Jump")]
     public float jumpForce;
+    public float climbMaxSpeed;
 
     [Header("Attack")]
     public float attackCooldown;
@@ -83,10 +82,14 @@ public class PlayerControls : MonoBehaviour
         Inputs = new InputSystem_Actions();
         Inputs.Player.Enable();
 
-        Inputs.Player.Move.performed += ctx => _move = ctx.ReadValue<Vector2>().x;
-        Inputs.Player.Move.canceled += ctx => _move = 0f;
+        Inputs.Player.Move.performed += ctx => _moveInput = ctx.ReadValue<Vector2>();
+        Inputs.Player.Move.canceled += ctx => _moveInput = Vector2.zero;
         Inputs.Player.Jump.performed += ctx => LastPressedJumpTime = jumpInputBufferTime;
-        Inputs.Player.Jump.canceled += ctx => IsJumping = false;
+        Inputs.Player.Jump.canceled += ctx =>
+        {
+            IsJumping = false;
+            IsClimbing = false;
+        };
         Inputs.Player.Attack.performed += ctx => Attack();
     }
 
@@ -102,7 +105,7 @@ public class PlayerControls : MonoBehaviour
         LastPressedJumpTime -= Time.deltaTime;
         AttackTimer -= Time.deltaTime;
 
-        if (_move != 0) CheckDirectionToFace(_move > 0);
+        if (_moveInput.x != 0) CheckDirectionToFace(_moveInput.x > 0);
 
         if (!IsJumping)
         {
@@ -114,21 +117,28 @@ public class PlayerControls : MonoBehaviour
 
         if (IsJumping && RB.linearVelocityY < 0) IsJumping = false;
 
-        if (LastOnGroundTime > 0 && !IsJumping && LastPressedJumpTime > 0)
+        if (CanClimb && LastPressedJumpTime > 0)
+        {
+            IsClimbing = true;
+        }
+        else if (LastOnGroundTime > 0 && !IsJumping && LastPressedJumpTime > 0)
         {
             IsJumping = true;
             Jump();
         }
 
-        if (!IsJumping) RB.gravityScale = gravityScale * fastFallGravityMult;
+        if (!CanClimb) IsClimbing = false;
+
+        if (IsClimbing) RB.gravityScale = 0f;
         else RB.gravityScale = gravityScale;
 
-        RB.linearVelocity = new Vector2(RB.linearVelocityX, Mathf.Max(RB.linearVelocityY, -maxFastFallSpeed));
+        RB.linearVelocity = new Vector2(RB.linearVelocityX, Mathf.Max(RB.linearVelocityY, -maxFallSpeed));
     }
 
     private void FixedUpdate()
     {
-        Run(1);
+        if (IsClimbing) Climb();
+        else Run(1);
     }
 
     public void CheckDirectionToFace(bool isMovingRight)
@@ -145,7 +155,7 @@ public class PlayerControls : MonoBehaviour
 
     private void Run(float lerpAmount)
     {
-        float targetSpeed = _move * runMaxSpeed;
+        float targetSpeed = _moveInput.x * runMaxSpeed;
         targetSpeed = Mathf.Lerp(RB.linearVelocityX, targetSpeed, lerpAmount);
 
         float accelRate = (Mathf.Abs(targetSpeed) > 0.01f) ? runAccelAmount : runDeccelAmount;
@@ -153,6 +163,20 @@ public class PlayerControls : MonoBehaviour
 
         float movement = speedDif * accelRate;
         RB.AddForce(movement * Vector2.right, ForceMode2D.Force);
+    }
+
+    private void Climb()
+    {
+        // float targetSpeed = _moveInput.magnitude * climbMaxSpeed;
+        // targetSpeed = Mathf.Lerp(RB.linearVelocity.magnitude, targetSpeed, lerpAmount);
+
+        // float accelRate = (Mathf.Abs(targetSpeed) > 0.01f) ? climbAccelAmount : climbDeccelAmount;
+        // float speedDif = targetSpeed - RB.linearVelocity.magnitude;
+
+        // float movement = speedDif * accelRate;
+        // RB.AddForce(movement * _moveInput, ForceMode2D.Force);
+
+        RB.linearVelocity = _moveInput.normalized * climbMaxSpeed;
     }
 
     private void Jump()

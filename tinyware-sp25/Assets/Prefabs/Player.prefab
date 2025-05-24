@@ -319,13 +319,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 553f627427f356c4f9ea2256d80916d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gravityScale: 2.5
+  gravityScale: 5
   fastFallGravityMult: 2
   maxFastFallSpeed: 20
   runMaxSpeed: 9.5
   runAccelAmount: 50
   runDeccelAmount: 30
-  jumpForce: 10
+  jumpForce: 15
   attackCooldown: 0.5
   coyoteTime: 0.2
   jumpInputBufferTime: 0.2
@@ -339,6 +339,7 @@ MonoBehaviour:
   _attackLayer:
     serializedVersion: 2
     m_Bits: 128
+  lightDeathThreshold: 7
   faceSprite: {fileID: 1235329640148585004}
   litMaterial: {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
   unlitMaterial: {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
