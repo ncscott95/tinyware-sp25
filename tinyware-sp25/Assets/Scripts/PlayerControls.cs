@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 
 public class PlayerControls : MonoBehaviour
 {
@@ -50,6 +51,9 @@ public class PlayerControls : MonoBehaviour
     [SerializeField] private Transform _attackCheckPoint;
     [SerializeField] private float _attackRadius;
     [SerializeField] private LayerMask _attackLayer;
+
+    [Header("Death")]
+    public float lightDeathThreshold;
 
     [Header("References")]
     [SerializeField] private SpriteRenderer faceSprite;
@@ -179,5 +183,12 @@ public class PlayerControls : MonoBehaviour
     {
         Gizmos.DrawWireCube(_groundCheckPoint.position, _groundCheckSize);
         Gizmos.DrawWireSphere(_attackCheckPoint.position, _attackRadius);
+    }
+
+    public void Death()
+    {
+        // TODO: Death animation
+        // Respawn?
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 }

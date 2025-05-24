@@ -38,14 +38,18 @@ public class FieldOfView : MonoBehaviour
                 if (raycastHit2D.collider.GetComponent<PlayerControls>() != null)
                 {
                     numHits++;
-                    Debug.Log("hit");
+                    if (light2D.intensity >= PlayerControls.Instance.lightDeathThreshold)
+                    {
+                        // Player dies
+                        PlayerControls.Instance.Death();
+                    }
                 }
             }
 
             angle -= angleIncrement; // "-=" because going clock-wise
         }
 
-        isHittingPlayer = numHits >= 2;
+        isHittingPlayer = numHits >= 3;
     }
 
     private Vector3 GetVectorFromAngle(float angle)
