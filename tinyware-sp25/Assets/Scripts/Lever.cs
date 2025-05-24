@@ -4,14 +4,8 @@ using UnityEngine;
 public class Lever : MonoBehaviour, IInteractable
 {
     public bool IsActive;
-    public List<LightObject> OnTrueObjects;
-    public List<LightObject> OnFalseObjects;
+    public List<LightObject> LinkedLights;
     [SerializeField] private SpriteRenderer spriteRenderer;
-
-    void Awake()
-    {
-        UpdateObjects();
-    }
 
     public void OnInteract()
     {
@@ -30,7 +24,6 @@ public class Lever : MonoBehaviour, IInteractable
 
     private void UpdateObjects()
     {
-        foreach (LightObject light in OnTrueObjects) light.SetActive(IsActive);
-        foreach (LightObject light in OnFalseObjects) light.SetActive(!IsActive);
+        foreach (LightObject light in LinkedLights) light.SetActive(!light.IsActive);
     }
 }
