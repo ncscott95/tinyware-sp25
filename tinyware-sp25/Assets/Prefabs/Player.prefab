@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7694321982914589652}
   - component: {fileID: 1235329640148585004}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Face
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -75,7 +75,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1892144727
   m_SortingLayer: 3
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: 7482667652216324306, guid: 75f5f34dc1b5347e0b8351032682f224, type: 3}
   m_Color: {r: 0, g: 0, b: 1, a: 1}
   m_FlipX: 0
@@ -97,7 +97,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5499690662100331827}
   - component: {fileID: 880074384497820604}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -183,7 +183,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 199520909365684874}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: GroundCheckPosition
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -218,7 +218,7 @@ GameObject:
   - component: {fileID: 6862386884648976852}
   - component: {fileID: 1908131161490890766}
   - component: {fileID: 4486509632771095872}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -339,6 +339,9 @@ MonoBehaviour:
   _attackLayer:
     serializedVersion: 2
     m_Bits: 128
+  faceSprite: {fileID: 1235329640148585004}
+  litMaterial: {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  unlitMaterial: {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
 --- !u!114 &4486509632771095872
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -454,7 +457,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5611733245136146973}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: AttackCheckPosition
   m_TagString: Untagged
   m_Icon: {fileID: 0}

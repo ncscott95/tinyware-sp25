@@ -3,7 +3,8 @@ using UnityEngine.Rendering.Universal;
 
 public class FieldOfView : MonoBehaviour
 {
-    [SerializeField] float angleIncrement = 2f;
+    public bool isHittingPlayer;
+    [SerializeField] float angleIncrement = 5f;
     [SerializeField] LayerMask layerMask;
     private Light2D light2D;
     private float fov;
@@ -18,10 +19,16 @@ public class FieldOfView : MonoBehaviour
 
     void Update()
     {
+        if (light2D.color.a == 0f)
+        {
+            isHittingPlayer = false;
+            return;
+        }
+
         int rayCount = (int)(fov / angleIncrement);
-        float angle = -fov;
+        float angle = -90f + (fov / 2f);
 
-
+        int numHits = 0;
         for (int i = 0; i <= rayCount; i++)
         {
             RaycastHit2D raycastHit2D = Physics2D.Raycast(transform.position, GetVectorFromAngle(angle), viewDistance, layerMask);
@@ -30,17 +37,15 @@ public class FieldOfView : MonoBehaviour
                 // Hit
                 if (raycastHit2D.collider.GetComponent<PlayerControls>() != null)
                 {
+                    numHits++;
                     Debug.Log("hit");
                 }
-            }
-            else
-            {
-                // No Hit
-                Debug.Log("no hit");
             }
 
             angle -= angleIncrement; // "-=" because going clock-wise
         }
+
+        isHittingPlayer = numHits >= 2;
     }
 
     private Vector3 GetVectorFromAngle(float angle)

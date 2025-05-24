@@ -4,6 +4,7 @@ using UnityEngine.Rendering.Universal;
 public class LightObject : MonoBehaviour, IInteractable
 {
     public bool IsActive;
+    public FieldOfView fov;
     [SerializeField] private SpriteRenderer spriteRenderer;
     [SerializeField] private Light2D light2D;
 
@@ -15,20 +16,24 @@ public class LightObject : MonoBehaviour, IInteractable
     public void SetActive(bool active)
     {
         IsActive = active;
+        Color tempCol = light2D.color;
+
         if (IsActive)
         {
             spriteRenderer.color = Color.yellow;
-            light2D.gameObject.SetActive(true);
+            tempCol.a = 1f;
         }
         else
         {
             spriteRenderer.color = Color.black;
-            light2D.gameObject.SetActive(false);
+            tempCol.a = 0f;
         }
+
+        light2D.color = tempCol;
     }
 
     public void OnInteract()
     {
-        if (IsActive) Destroy(gameObject);
+        if (IsActive) SetActive(false);
     }
 }

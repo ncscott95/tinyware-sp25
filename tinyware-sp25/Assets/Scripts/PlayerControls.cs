@@ -1,6 +1,9 @@
 // Adapted from @DawnosaurDev at youtube.com/c/DawnosaurStudios
 
+using System;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class PlayerControls : MonoBehaviour
 {
@@ -14,6 +17,10 @@ public class PlayerControls : MonoBehaviour
     private float _move;
     public float LastPressedJumpTime { get; private set; }
     public float AttackTimer { get; private set; }
+
+    public static PlayerControls Instance;
+    public delegate void LitChangeDelegate(bool value);
+    public static LitChangeDelegate OnLitChange;
 
     [Header("Gravity")]
     public float gravityScale;
@@ -44,8 +51,30 @@ public class PlayerControls : MonoBehaviour
     [SerializeField] private float _attackRadius;
     [SerializeField] private LayerMask _attackLayer;
 
+    [Header("References")]
+    [SerializeField] private SpriteRenderer faceSprite;
+    [SerializeField] private Material litMaterial, unlitMaterial;
+
+    private bool isLit;
+    public bool IsLit
+    {
+        get => isLit;
+        set
+        {
+            if (value != isLit)
+            {
+                faceSprite.material = value ? litMaterial : unlitMaterial;
+
+                isLit = value;
+                OnLitChange(value);
+            }
+        }
+    }
+
     private void Awake()
     {
+        Instance = this;
+
         RB = GetComponent<Rigidbody2D>();
         Inputs = new InputSystem_Actions();
         Inputs.Player.Enable();
