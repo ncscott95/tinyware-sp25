@@ -235,8 +235,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.556, y: 0.556, z: 0.556}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 5499690662100331827}
   - {fileID: 7694321982914589652}
@@ -320,12 +320,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gravityScale: 5
-  fastFallGravityMult: 2
-  maxFastFallSpeed: 20
-  runMaxSpeed: 9.5
+  maxFallSpeed: 30
+  runMaxSpeed: 5
   runAccelAmount: 50
   runDeccelAmount: 30
   jumpForce: 15
+  climbMaxSpeed: 0
   attackCooldown: 0.5
   coyoteTime: 0.2
   jumpInputBufferTime: 0.2
@@ -335,7 +335,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   _attackCheckPoint: {fileID: 5611733245136146973}
-  _attackRadius: 0.5
+  _attackRadius: 0.3
   _attackLayer:
     serializedVersion: 2
     m_Bits: 128
