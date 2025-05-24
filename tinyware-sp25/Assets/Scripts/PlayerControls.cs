@@ -1,90 +1,154 @@
+// Adapted from @DawnosaurDev at youtube.com/c/DawnosaurStudios
+
 using UnityEngine;
-using UnityEngine.Timeline;
 
 public class PlayerControls : MonoBehaviour
 {
-    public static PlayerControls Player;
+    public Rigidbody2D RB { get; private set; }
+    public InputSystem_Actions Inputs { get; private set; }
 
-    [SerializeField] private Rigidbody2D rb;
-    private InputSystem_Actions inputs;
+    public bool IsFacingRight { get; private set; }
+    public bool IsJumping { get; private set; }
+    public float LastOnGroundTime { get; private set; }
 
-    [Header("Movement")]
-    [SerializeField] private float moveSpeed;
-    private float move;
-    private bool facingRight = true;
-    [SerializeField] private float jumpPower;
+    private float _move;
+    public float LastPressedJumpTime { get; private set; }
+    public float AttackTimer { get; private set; }
 
-    [Header("Grounding")]
-    [SerializeField] private bool isGrounded;
-    [SerializeField] private Vector2 boxSize;
-    [SerializeField] private float castDistance;
-    [SerializeField] private LayerMask groundLayer;
+    [Header("Gravity")]
+    public float gravityScale;
+    [Space(5)]
+    public float fastFallGravityMult;
+    public float maxFastFallSpeed;
+
+    [Header("Run")]
+    public float runMaxSpeed;
+    public float runAccelAmount;
+    public float runDeccelAmount;
+
+    [Header("Jump")]
+    public float jumpForce;
 
     [Header("Attack")]
-    [SerializeField] private Transform attackPosition;
-    [SerializeField] private float attackRadius;
-    [SerializeField] private LayerMask attackLayer;
-    private bool canAttack = true;
+    public float attackCooldown;
 
-    void Awake()
+    [Header("Assists")]
+    [Range(0.01f, 0.5f)] public float coyoteTime;
+    [Range(0.01f, 0.5f)] public float jumpInputBufferTime;
+
+    [Header("Checks")]
+    [SerializeField] private Transform _groundCheckPoint;
+    [SerializeField] private Vector2 _groundCheckSize = new Vector2(0.49f, 0.03f);
+    [SerializeField] private LayerMask _groundLayer;
+    [SerializeField] private Transform _attackCheckPoint;
+    [SerializeField] private float _attackRadius;
+    [SerializeField] private LayerMask _attackLayer;
+
+    private void Awake()
     {
-        inputs = new InputSystem_Actions();
+        RB = GetComponent<Rigidbody2D>();
+        Inputs = new InputSystem_Actions();
+        Inputs.Player.Enable();
 
-        inputs.Player.Move.performed += ctx => move = ctx.ReadValue<Vector2>().x;
-        inputs.Player.Move.canceled += ctx => move = 0f;
-        inputs.Player.Jump.performed += ctx => Jump();
-        inputs.Player.Attack.performed += ctx => Attack();
+        Inputs.Player.Move.performed += ctx => _move = ctx.ReadValue<Vector2>().x;
+        Inputs.Player.Move.canceled += ctx => _move = 0f;
+        Inputs.Player.Jump.performed += ctx => LastPressedJumpTime = jumpInputBufferTime;
+        Inputs.Player.Jump.canceled += ctx => IsJumping = false;
+        Inputs.Player.Attack.performed += ctx => Attack();
     }
 
-    void OnEnable()
+    private void Start()
     {
-        inputs.Player.Enable();
+        RB.gravityScale = gravityScale;
+        IsFacingRight = true;
     }
 
-    void OnDisable()
+    private void Update()
     {
-        inputs.Player.Disable();
-    }
+        LastOnGroundTime -= Time.deltaTime;
+        LastPressedJumpTime -= Time.deltaTime;
+        AttackTimer -= Time.deltaTime;
 
-    void Update()
-    {
-        rb.linearVelocityX = move * moveSpeed;
-        if (move < 0 && facingRight || move > 0 && !facingRight)
+        if (_move != 0) CheckDirectionToFace(_move > 0);
+
+        if (!IsJumping)
         {
-            facingRight = !facingRight;
-            transform.localScale = new Vector3(transform.localScale.x * -1, transform.localScale.y, transform.localScale.z);
+            if (Physics2D.OverlapBox(_groundCheckPoint.position, _groundCheckSize, 0, _groundLayer) && !IsJumping)
+            {
+                LastOnGroundTime = coyoteTime;
+            }
         }
 
-        isGrounded = Physics2D.BoxCast(transform.position, boxSize, 0, -transform.up, castDistance, groundLayer);
+        if (IsJumping && RB.linearVelocityY < 0) IsJumping = false;
+
+        if (LastOnGroundTime > 0 && !IsJumping && LastPressedJumpTime > 0)
+        {
+            IsJumping = true;
+            Jump();
+        }
+
+        if (!IsJumping) RB.gravityScale = gravityScale * fastFallGravityMult;
+        else RB.gravityScale = gravityScale;
+
+        RB.linearVelocity = new Vector2(RB.linearVelocityX, Mathf.Max(RB.linearVelocityY, -maxFastFallSpeed));
     }
 
-    void Jump()
+    private void FixedUpdate()
     {
-        if (isGrounded)
+        Run(1);
+    }
+
+    public void CheckDirectionToFace(bool isMovingRight)
+    {
+        if (isMovingRight != IsFacingRight)
         {
-            isGrounded = false;
-            rb.AddForce(Vector2.up * jumpPower);
+            Vector3 scale = transform.localScale;
+            scale.x *= -1;
+            transform.localScale = scale;
+
+            IsFacingRight = !IsFacingRight;
         }
+    }
+
+    private void Run(float lerpAmount)
+    {
+        float targetSpeed = _move * runMaxSpeed;
+        targetSpeed = Mathf.Lerp(RB.linearVelocityX, targetSpeed, lerpAmount);
+
+        float accelRate = (Mathf.Abs(targetSpeed) > 0.01f) ? runAccelAmount : runDeccelAmount;
+        float speedDif = targetSpeed - RB.linearVelocityX;
+
+        float movement = speedDif * accelRate;
+        RB.AddForce(movement * Vector2.right, ForceMode2D.Force);
+    }
+
+    private void Jump()
+    {
+        LastPressedJumpTime = 0;
+        LastOnGroundTime = 0;
+
+        float force = jumpForce;
+        if (RB.linearVelocityY < 0) force -= RB.linearVelocityY;
+
+        RB.AddForce(Vector2.up * force, ForceMode2D.Impulse);
     }
 
     void Attack()
     {
-        if (canAttack)
+        if (AttackTimer < attackCooldown)
         {
-            canAttack = false;
-            Collider2D[] targets = Physics2D.OverlapCircleAll(attackPosition.position, attackRadius, attackLayer);
+            AttackTimer = attackCooldown;
+            Collider2D[] targets = Physics2D.OverlapCircleAll(_attackCheckPoint.position, _attackRadius, _attackLayer);
             foreach (Collider2D col in targets)
             {
                 col.GetComponent<IInteractable>()?.OnInteract();
             }
-            // TODO: attack cooldown
-            canAttack = true; // debug, remove later
         }
     }
 
-    void OnDrawGizmos()
+    private void OnDrawGizmosSelected()
     {
-        Gizmos.DrawWireCube(transform.position - transform.up * castDistance, boxSize);
-        Gizmos.DrawWireSphere(attackPosition.position, attackRadius);
+        Gizmos.DrawWireCube(_groundCheckPoint.position, _groundCheckSize);
+        Gizmos.DrawWireSphere(_attackCheckPoint.position, _attackRadius);
     }
 }
