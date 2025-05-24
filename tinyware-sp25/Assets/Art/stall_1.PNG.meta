@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 1211a771ebc49c04cb55ce03449e9679
+guid: d3a966c117f205643a6e88a3e7674633
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 8117616919685553457
-    second: Grid (1)_0
+      213: -5077275235272708288
+    second: stall_1_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -113,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Grid (1)_0
+      name: stall_1_0
       rect:
         serializedVersion: 2
-        x: 0
+        x: 340
         y: 0
-        width: 1920
-        height: 1080
+        width: 404
+        height: 458
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 13dde88549197a070800000000000000
-      internalID: 8117616919685553457
+      spriteID: 04faea6f215e989b0800000000000000
+      internalID: -5077275235272708288
       vertices: []
       indices: 
       edges: []
@@ -147,8 +147,7 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable:
-      Grid (1)_0: 8117616919685553457
+    nameFileIdTable: {}
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

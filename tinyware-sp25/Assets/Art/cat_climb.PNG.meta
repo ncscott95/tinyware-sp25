@@ -1,10 +1,13 @@
 fileFormatVersion: 2
-guid: 1211a771ebc49c04cb55ce03449e9679
+guid: bf59043dd4ebf7940902c0f513047a36
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 8117616919685553457
-    second: Grid (1)_0
+      213: -6637156650031454799
+    second: cat_climb_0
+  - first:
+      213: -2943777914622443573
+    second: cat_climb_1
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -113,23 +116,45 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Grid (1)_0
+      name: cat_climb_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 1920
-        height: 1080
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 190
+        height: 411
+      alignment: 9
+      pivot: {x: 0.4669747, y: 0.53}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 13dde88549197a070800000000000000
-      internalID: 8117616919685553457
+      spriteID: ff02d0070c1ee604db88c3ef00184b37
+      internalID: 1044813090
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: cat_climb_1
+      rect:
+        serializedVersion: 2
+        x: 190
+        y: 0
+        width: 190
+        height: 411
+      alignment: 9
+      pivot: {x: 0.5440338, y: 0.53}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: dec3094339d69534ca150e597211ed99
+      internalID: 2043684289
       vertices: []
       indices: 
       edges: []
@@ -138,7 +163,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 210c9cde296ccc9499ce346d5cbe7641
     internalID: 0
     vertices: []
     indices: 
@@ -148,7 +173,8 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Grid (1)_0: 8117616919685553457
+      cat_climb_0: 1044813090
+      cat_climb_1: 2043684289
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
