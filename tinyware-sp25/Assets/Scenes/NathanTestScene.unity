@@ -361,7 +361,7 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 58f4a3dff5ef3234e89f87cfad4918af, type: 3}
---- !u!43 &569485522
+--- !u!43 &757138424
 Mesh:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1235,7 +1235,7 @@ MonoBehaviour:
     rid: 9194432339818578101
   m_ShadowCastingSource: 2
   m_ShadowMesh:
-    m_Mesh: {fileID: 569485522}
+    m_Mesh: {fileID: 757138424}
     m_LocalBounds:
       m_Center: {x: 0, y: 0, z: 0}
       m_Extent: {x: 0.5, y: 0.5, z: 0}
@@ -1860,18 +1860,6 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 296606187384735366, guid: 4639b172a084b744fabe5236c8c94176, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.6
-      objectReference: {fileID: 0}
-    - target: {fileID: 296606187384735366, guid: 4639b172a084b744fabe5236c8c94176, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.6
-      objectReference: {fileID: 0}
-    - target: {fileID: 296606187384735366, guid: 4639b172a084b744fabe5236c8c94176, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 0.6
-      objectReference: {fileID: 0}
-    - target: {fileID: 296606187384735366, guid: 4639b172a084b744fabe5236c8c94176, type: 3}
       propertyPath: m_LocalPosition.x
       value: -8
       objectReference: {fileID: 0}
@@ -1910,34 +1898,6 @@ PrefabInstance:
     - target: {fileID: 296606187384735366, guid: 4639b172a084b744fabe5236c8c94176, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 296606187384735366, guid: 4639b172a084b744fabe5236c8c94176, type: 3}
-      propertyPath: m_ConstrainProportionsScale
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1908131161490890766, guid: 4639b172a084b744fabe5236c8c94176, type: 3}
-      propertyPath: jumpForce
-      value: 20
-      objectReference: {fileID: 0}
-    - target: {fileID: 1908131161490890766, guid: 4639b172a084b744fabe5236c8c94176, type: 3}
-      propertyPath: gravityScale
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 1908131161490890766, guid: 4639b172a084b744fabe5236c8c94176, type: 3}
-      propertyPath: maxFallSpeed
-      value: 30
-      objectReference: {fileID: 0}
-    - target: {fileID: 1908131161490890766, guid: 4639b172a084b744fabe5236c8c94176, type: 3}
-      propertyPath: climbMaxSpeed
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 1908131161490890766, guid: 4639b172a084b744fabe5236c8c94176, type: 3}
-      propertyPath: climbAccelAmount
-      value: 50
-      objectReference: {fileID: 0}
-    - target: {fileID: 1908131161490890766, guid: 4639b172a084b744fabe5236c8c94176, type: 3}
-      propertyPath: climbDeccelAmount
-      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 7011570944939419601, guid: 4639b172a084b744fabe5236c8c94176, type: 3}
       propertyPath: m_Name

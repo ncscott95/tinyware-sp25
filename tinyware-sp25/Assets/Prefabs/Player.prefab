@@ -214,8 +214,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 296606187384735366}
-  - component: {fileID: 1498176488867218483}
   - component: {fileID: 6862386884648976852}
+  - component: {fileID: 2356490388042962101}
   - component: {fileID: 1908131161490890766}
   - component: {fileID: 4486509632771095872}
   m_Layer: 3
@@ -235,8 +235,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.556, y: 0.556, z: 0.556}
-  m_ConstrainProportionsScale: 1
+  m_LocalScale: {x: 1.112, y: 0.556, z: 0.556}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5499690662100331827}
   - {fileID: 7694321982914589652}
@@ -244,8 +244,35 @@ Transform:
   - {fileID: 199520909365684874}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!58 &1498176488867218483
-CircleCollider2D:
+--- !u!50 &6862386884648976852
+Rigidbody2D:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7011570944939419601}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 1
+  m_Constraints: 4
+--- !u!61 &2356490388042962101
+BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -279,34 +306,17 @@ CircleCollider2D:
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
-  m_Radius: 0.5
---- !u!50 &6862386884648976852
-Rigidbody2D:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7011570944939419601}
-  m_BodyType: 0
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDamping: 0
-  m_AngularDamping: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 1
-  m_Constraints: 4
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Size: {x: 0.9, y: 0.9}
+  m_EdgeRadius: 0
 --- !u!114 &1908131161490890766
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -324,13 +334,13 @@ MonoBehaviour:
   runMaxSpeed: 5
   runAccelAmount: 50
   runDeccelAmount: 30
-  jumpForce: 15
-  climbMaxSpeed: 0
+  jumpForce: 14
+  climbMaxSpeed: 3
   attackCooldown: 0.5
   coyoteTime: 0.2
   jumpInputBufferTime: 0.2
   _groundCheckPoint: {fileID: 199520909365684874}
-  _groundCheckSize: {x: 0.49, y: 0.03}
+  _groundCheckSize: {x: 0.75, y: 0.03}
   _groundLayer:
     serializedVersion: 2
     m_Bits: 64
