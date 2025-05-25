@@ -183,6 +183,7 @@ public class PlayerControls : MonoBehaviour
 
     void Attack()
     {
+        Debug.Log("Hello");
         if (AttackTimer < attackCooldown)
         {
             AttackTimer = attackCooldown;

@@ -10,6 +10,9 @@ public class FieldOfView : MonoBehaviour
     private float fov;
     private float viewDistance;
 
+    // Debug
+    public GameObject debugGO;
+
     void Start()
     {
         light2D = GetComponent<Light2D>();
@@ -31,6 +34,7 @@ public class FieldOfView : MonoBehaviour
         int numHits = 0;
         for (int i = 0; i <= rayCount; i++)
         {
+            Vector3 vertex;
             RaycastHit2D raycastHit2D = Physics2D.Raycast(transform.position, GetVectorFromAngle(angle), viewDistance, layerMask);
             if (raycastHit2D.collider != null)
             {
@@ -44,10 +48,17 @@ public class FieldOfView : MonoBehaviour
                         PlayerControls.Instance.Death();
                     }
                 }
+                vertex = raycastHit2D.point;
+            }
+            else
+            {
+                vertex = transform.position + GetVectorFromAngle(angle) * viewDistance;
             }
 
             angle -= angleIncrement; // "-=" because going clock-wise
+            // Instantiate(debugGO, vertex, Quaternion.identity);
         }
+
 
         isHittingPlayer = numHits >= 3;
     }
