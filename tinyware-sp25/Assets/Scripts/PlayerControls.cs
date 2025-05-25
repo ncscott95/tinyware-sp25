@@ -127,7 +127,7 @@ public class PlayerControls : MonoBehaviour
             Jump();
         }
 
-        if (!CanClimb) IsClimbing = false;
+        if (!CanClimb || !Inputs.Player.Jump.IsPressed()) IsClimbing = false;
 
         if (IsClimbing) RB.gravityScale = 0f;
         else RB.gravityScale = gravityScale;
@@ -167,15 +167,6 @@ public class PlayerControls : MonoBehaviour
 
     private void Climb()
     {
-        // float targetSpeed = _moveInput.magnitude * climbMaxSpeed;
-        // targetSpeed = Mathf.Lerp(RB.linearVelocity.magnitude, targetSpeed, lerpAmount);
-
-        // float accelRate = (Mathf.Abs(targetSpeed) > 0.01f) ? climbAccelAmount : climbDeccelAmount;
-        // float speedDif = targetSpeed - RB.linearVelocity.magnitude;
-
-        // float movement = speedDif * accelRate;
-        // RB.AddForce(movement * _moveInput, ForceMode2D.Force);
-
         RB.linearVelocity = _moveInput.normalized * climbMaxSpeed;
     }
 
