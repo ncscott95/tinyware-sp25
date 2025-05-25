@@ -77,12 +77,22 @@ public class PlayerControls : MonoBehaviour
 
     private void Awake()
     {
-        Instance = this;
+        if (Instance != null && Instance != this)
+        {
+            Destroy(this);
+        }
+        else
+        {
+            Instance = this;
+        }
 
         RB = GetComponent<Rigidbody2D>();
         Inputs = new InputSystem_Actions();
         Inputs.Player.Enable();
+    }
 
+    private void OnEnable()
+    {
         Inputs.Player.Move.performed += ctx =>
         {
             _moveInputX = ctx.ReadValue<Vector2>().x;
@@ -100,6 +110,27 @@ public class PlayerControls : MonoBehaviour
             IsClimbing = false;
         };
         Inputs.Player.Attack.performed += ctx => Attack();
+    }
+
+    private void OnDisable()
+    {
+        Inputs.Player.Move.performed -= ctx =>
+        {
+            _moveInputX = ctx.ReadValue<Vector2>().x;
+            _moveInputY = ctx.ReadValue<Vector2>().y;
+        };
+        Inputs.Player.Move.canceled -= ctx =>
+        {
+            _moveInputX = 0f;
+            _moveInputY = 0f;
+        };
+        Inputs.Player.Jump.performed -= ctx => LastPressedJumpTime = jumpInputBufferTime;
+        Inputs.Player.Jump.canceled -= ctx =>
+        {
+            IsJumping = false;
+            IsClimbing = false;
+        };
+        Inputs.Player.Attack.performed -= ctx => Attack();
     }
 
     private void Start()
@@ -211,7 +242,13 @@ public class PlayerControls : MonoBehaviour
         if (AttackTimer < 0)
         {
             AttackTimer = attackCooldown;
-            Collider2D[] targets = Physics2D.OverlapCircleAll(_attackCheckPoint.position, _attackRadius, _attackLayer);
+            // Debug.Log(_attackCheckPoint);
+            Debug.Log(_attackRadius);
+            Debug.Log(_attackLayer);
+            // Collider2D[] targets = Physics2D.OverlapCircleAll(_attackCheckPoint.position, _attackRadius, _attackLayer);
+            Vector2 attackPos = new(transform.position.x + (transform.localScale.x * 0.5f), transform.position.y);
+            Debug.Log(attackPos);
+            Collider2D[] targets = Physics2D.OverlapCircleAll(attackPos, _attackRadius, _attackLayer);
             foreach (Collider2D col in targets)
             {
                 col.GetComponent<IInteractable>()?.OnInteract();
