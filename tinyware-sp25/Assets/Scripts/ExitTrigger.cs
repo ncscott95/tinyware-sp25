@@ -8,6 +8,6 @@ public class ExitTrigger : MonoBehaviour
     void OnTriggerEnter2D(Collider2D collision)
     {
         // Transition out of scene
-        CrossFade.Instance.FadeOut(nextScene);
+        if (collision.GetComponent<PlayerControls>() != null) CrossFade.Instance.FadeOut(nextScene);
     }
 }
