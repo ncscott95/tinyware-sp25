@@ -1,6 +1,7 @@
 // Adapted from @DawnosaurDev at youtube.com/c/DawnosaurStudios
 
 using System;
+using System.Collections;
 using UnityEngine;
 
 public class PlayerControls : MonoBehaviour
@@ -12,11 +13,13 @@ public class PlayerControls : MonoBehaviour
     public bool IsJumping { get; private set; }
     public bool CanClimb { get; set; }
     public bool IsClimbing { get; private set; }
+    public bool CanDrop { get; set; }
     public float LastOnGroundTime { get; private set; }
     public float LastPressedJumpTime { get; private set; }
     public float AttackTimer { get; private set; }
 
-    private Vector2 _moveInput;
+    private float _moveInputX;
+    private float _moveInputY;
     private Vector2 _startPosition;
 
     public static PlayerControls Instance;
@@ -80,8 +83,16 @@ public class PlayerControls : MonoBehaviour
         Inputs = new InputSystem_Actions();
         Inputs.Player.Enable();
 
-        Inputs.Player.Move.performed += ctx => _moveInput = ctx.ReadValue<Vector2>();
-        Inputs.Player.Move.canceled += ctx => _moveInput = Vector2.zero;
+        Inputs.Player.Move.performed += ctx =>
+        {
+            _moveInputX = ctx.ReadValue<Vector2>().x;
+            _moveInputY = ctx.ReadValue<Vector2>().y;
+        };
+        Inputs.Player.Move.canceled += ctx =>
+        {
+            _moveInputX = 0f;
+            _moveInputY = 0f;
+        };
         Inputs.Player.Jump.performed += ctx => LastPressedJumpTime = jumpInputBufferTime;
         Inputs.Player.Jump.canceled += ctx =>
         {
@@ -104,13 +115,15 @@ public class PlayerControls : MonoBehaviour
         LastPressedJumpTime -= Time.deltaTime;
         AttackTimer -= Time.deltaTime;
 
-        if (_moveInput.x != 0) CheckDirectionToFace(_moveInput.x > 0);
+        if (_moveInputX != 0) CheckDirectionToFace(_moveInputX > 0);
 
         if (!IsJumping)
         {
-            if (Physics2D.OverlapBox(_groundCheckPoint.position, _groundCheckSize, 0, _groundLayer) && !IsJumping)
+            Collider2D ground = Physics2D.OverlapBox(_groundCheckPoint.position, _groundCheckSize, 0, _groundLayer);
+            if (ground != null)
             {
                 LastOnGroundTime = coyoteTime;
+                if (_moveInputY < 0 && ground.GetComponent<PlatformEffector2D>() != null) Drop(ground);
             }
         }
 
@@ -154,7 +167,7 @@ public class PlayerControls : MonoBehaviour
 
     private void Run(float lerpAmount)
     {
-        float targetSpeed = _moveInput.x * runMaxSpeed;
+        float targetSpeed = _moveInputX * runMaxSpeed;
         targetSpeed = Mathf.Lerp(RB.linearVelocityX, targetSpeed, lerpAmount);
 
         float accelRate = (Mathf.Abs(targetSpeed) > 0.01f) ? runAccelAmount : runDeccelAmount;
@@ -166,7 +179,20 @@ public class PlayerControls : MonoBehaviour
 
     private void Climb()
     {
-        RB.linearVelocity = _moveInput.normalized * climbMaxSpeed;
+        Vector2 movement = new Vector2(_moveInputX, _moveInputY).normalized;
+        RB.linearVelocity = movement * climbMaxSpeed;
+    }
+
+    private void Drop(Collider2D platformCol)
+    {
+        platformCol.enabled = false;
+        StartCoroutine(EnablePlatformCollider(platformCol));
+    }
+
+    IEnumerator EnablePlatformCollider(Collider2D platformCol)
+    {
+        yield return new WaitForSeconds(0.5f);
+        platformCol.enabled = true;
     }
 
     private void Jump()
