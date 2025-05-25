@@ -1,10 +1,7 @@
 // Adapted from @DawnosaurDev at youtube.com/c/DawnosaurStudios
 
 using System;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
-using UnityEngine.SceneManagement;
 
 public class PlayerControls : MonoBehaviour
 {
@@ -20,6 +17,7 @@ public class PlayerControls : MonoBehaviour
     public float AttackTimer { get; private set; }
 
     private Vector2 _moveInput;
+    private Vector2 _startPosition;
 
     public static PlayerControls Instance;
     public delegate void LitChangeDelegate(bool value);
@@ -97,6 +95,7 @@ public class PlayerControls : MonoBehaviour
     {
         RB.gravityScale = gravityScale;
         IsFacingRight = true;
+        _startPosition = transform.position;
     }
 
     private void Update()
@@ -183,15 +182,17 @@ public class PlayerControls : MonoBehaviour
 
     void Attack()
     {
-        Debug.Log("Hello");
-        if (AttackTimer < attackCooldown)
+        if (AttackTimer < 0)
         {
+            Debug.Log("Before");
             AttackTimer = attackCooldown;
             Collider2D[] targets = Physics2D.OverlapCircleAll(_attackCheckPoint.position, _attackRadius, _attackLayer);
+            Debug.Log(targets.Length);
             foreach (Collider2D col in targets)
             {
                 col.GetComponent<IInteractable>()?.OnInteract();
             }
+            Debug.Log("After");
         }
     }
 
@@ -205,6 +206,7 @@ public class PlayerControls : MonoBehaviour
     {
         // TODO: Death animation
         // Respawn?
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        // SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        transform.position = _startPosition;
     }
 }
