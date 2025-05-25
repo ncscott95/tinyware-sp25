@@ -24,7 +24,6 @@ public class LightBeam : MonoBehaviour
     void Update()
     {
         PointAtTarget();
-        if (Input.GetKeyDown(KeyCode.Backspace)) TriggerDim();
     }
 
     private void PointAtTarget()
@@ -51,6 +50,13 @@ public class LightBeam : MonoBehaviour
 
     public void TriggerDim()
     {
-        LeanTween.value(0f, initialIntensity, DimRecoverTime).setEaseInExpo().setOnUpdate((float val) => { light2D.intensity = val; });
+        polygonCollider2D.enabled = false;
+        LeanTween.value(0f, initialIntensity, DimRecoverTime).setEaseInExpo().setOnUpdate((float val) => { light2D.intensity = val; }).setOnComplete(() => polygonCollider2D.enabled = true);
+    }
+
+    public void ToggleEnabled(bool enabled)
+    {
+        light2D.intensity = enabled ? initialIntensity : 0f;
+        polygonCollider2D.enabled = enabled;
     }
 }

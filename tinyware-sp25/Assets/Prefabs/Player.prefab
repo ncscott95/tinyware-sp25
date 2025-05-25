@@ -398,7 +398,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   _attackCheckPoint: {fileID: 5611733245136146973}
-  _attackRadius: 0.5
+  _attackRadius: 0.75
   _attackLayer:
     serializedVersion: 2
     m_Bits: 128
