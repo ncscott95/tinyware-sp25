@@ -307,7 +307,7 @@ public class PlayerControls : MonoBehaviour
 
     public void ChangeAnimationState(string newState)
     {
-        Debug.Log(currentState);
+        // Debug.Log(currentState);
         if (currentState == newState) return;
 
         animator.Play(newState);

@@ -44,7 +44,7 @@ public class BeamLever : MonoBehaviour, IInteractable
             for (int i = 0; i < LinkedLights.Count; i++)
             {
                 LinkedLights[i].Target = IsActive ? Targets[0] : Targets[1];
-                BeamPuzzleManager.Instance.BeamChainEffect();
+                if (BeamPuzzleManager.Instance != null) BeamPuzzleManager.Instance.BeamChainEffect();
             }
         }
     }

@@ -39,7 +39,7 @@ public class CrossFade : MonoBehaviour
     public void FadeOut(int nextScene)
     {
         canvasGroup.alpha = 0f;
-        PlayerControls.Instance.Inputs.Player.Disable();
+        if (PlayerControls.Instance != null) PlayerControls.Instance.Inputs.Player.Disable();
         canvasGroup.LeanAlpha(1f, fadeTime).setOnComplete(FadeOutComplete, nextScene);
     }
 
