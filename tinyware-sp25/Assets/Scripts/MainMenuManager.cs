@@ -2,6 +2,13 @@ using UnityEngine;
 
 public class MainMenuManager : MonoBehaviour
 {
+    public GameObject Credits;
+
+    void Awake()
+    {
+        Credits.SetActive(false);
+    }
+
     public void OnButtonStart()
     {
         PlayerPrefs.DeleteAll();
@@ -13,6 +20,11 @@ public class MainMenuManager : MonoBehaviour
 
     public void OnButtonCredits()
     {
-        // TODO: show credits
+        Credits.SetActive(true);
+    }
+
+    public void OnButtonBack()
+    {
+        Credits.SetActive(false);
     }
 }
