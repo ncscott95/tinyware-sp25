@@ -3,6 +3,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerControls : MonoBehaviour
 {
@@ -300,9 +301,7 @@ public class PlayerControls : MonoBehaviour
     public void Death()
     {
         // TODO: Death animation
-        // Respawn?
-        // SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-        transform.position = _startPosition;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     public void ChangeAnimationState(string newState)
