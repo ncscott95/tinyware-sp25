@@ -5,7 +5,6 @@ public class LightObject : MonoBehaviour, IInteractable
 {
     public bool IsActive;
     public FieldOfView fov;
-    [SerializeField] private SpriteRenderer spriteRenderer;
     [SerializeField] private Light2D light2D;
 
     void Start()
@@ -20,12 +19,10 @@ public class LightObject : MonoBehaviour, IInteractable
 
         if (IsActive)
         {
-            spriteRenderer.color = Color.yellow;
             tempCol.a = 1f;
         }
         else
         {
-            spriteRenderer.color = Color.black;
             tempCol.a = 0f;
         }
 

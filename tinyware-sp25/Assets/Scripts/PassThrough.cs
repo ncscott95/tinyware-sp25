@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class PassThrough : MonoBehaviour
 {
-    [SerializeField] private BoxCollider2D boxCollider;
+    [SerializeField] private Collider2D col2D;
 
     void Start()
     {
@@ -16,6 +16,6 @@ public class PassThrough : MonoBehaviour
 
     private void UpdatePassThrough(bool value)
     {
-        boxCollider.isTrigger = !value;
+        col2D.isTrigger = !value;
     }
 }

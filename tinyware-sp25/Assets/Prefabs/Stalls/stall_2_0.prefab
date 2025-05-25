@@ -100,6 +100,7 @@ GameObject:
   - component: {fileID: 4192797408606755391}
   - component: {fileID: 1819184817150662774}
   - component: {fileID: 2566810337429044425}
+  - component: {fileID: 8682530486414476836}
   m_Layer: 6
   m_Name: Collider Top
   m_TagString: Untagged
@@ -194,6 +195,19 @@ PolygonCollider2D:
       - {x: 3.3, y: -0.54}
       - {x: 3.3, y: -0.15}
   m_UseDelaunayMesh: 0
+--- !u!114 &8682530486414476836
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2890547765143317758}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4f2536cf71dcb44b9be377dea987138, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  col2D: {fileID: 2566810337429044425}
 --- !u!1 &5233959995500337334
 GameObject:
   m_ObjectHideFlags: 0
@@ -205,6 +219,7 @@ GameObject:
   - component: {fileID: 2582589599750290106}
   - component: {fileID: 1427786482488609881}
   - component: {fileID: 3244723058752869214}
+  - component: {fileID: 7420691025196029611}
   m_Layer: 6
   m_Name: Collider Bottom
   m_TagString: Untagged
@@ -292,3 +307,16 @@ PlatformEffector2D:
   m_UseSideFriction: 0
   m_UseSideBounce: 0
   m_SideArc: 1
+--- !u!114 &7420691025196029611
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5233959995500337334}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4f2536cf71dcb44b9be377dea987138, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  col2D: {fileID: 1427786482488609881}

@@ -242,13 +242,8 @@ public class PlayerControls : MonoBehaviour
         if (AttackTimer < 0)
         {
             AttackTimer = attackCooldown;
-            // Debug.Log(_attackCheckPoint);
-            Debug.Log(_attackRadius);
-            Debug.Log(_attackLayer);
-            // Collider2D[] targets = Physics2D.OverlapCircleAll(_attackCheckPoint.position, _attackRadius, _attackLayer);
-            Vector2 attackPos = new(transform.position.x + (transform.localScale.x * 0.5f), transform.position.y);
-            Debug.Log(attackPos);
-            Collider2D[] targets = Physics2D.OverlapCircleAll(attackPos, _attackRadius, _attackLayer);
+            // Vector2 attackPos = new(transform.position.x + (transform.localScale.x * 0.5f), transform.position.y);
+            Collider2D[] targets = Physics2D.OverlapCircleAll(_attackCheckPoint.position, _attackRadius, _attackLayer);
             foreach (Collider2D col in targets)
             {
                 col.GetComponent<IInteractable>()?.OnInteract();
