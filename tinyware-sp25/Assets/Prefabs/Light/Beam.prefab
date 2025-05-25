@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2249993032411259093}
   - component: {fileID: 5208179352169368829}
+  - component: {fileID: 677280253171784360}
   m_Layer: 0
   m_Name: Beam
   m_TagString: Untagged
@@ -85,3 +86,16 @@ MonoBehaviour:
   - {x: 20, y: 0.5, z: 0}
   - {x: -0.5, y: 0.5, z: 0}
   - {x: -1, y: 0, z: 0}
+--- !u!114 &677280253171784360
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4926915176164602194}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b34dd6b79029c934581c5be9bd9a1d19, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Target: {fileID: 0}
