@@ -1,19 +1,18 @@
-using System.Collections;
 using UnityEngine;
-using UnityEngine.AI;
 using UnityEngine.Rendering.Universal;
 
 public class LightBeam : MonoBehaviour
 {
     public Transform Target;
     public float DimRecoverTime;
+    public bool IsActive;
     private Light2D light2D;
     private PolygonCollider2D polygonCollider2D;
     private Vector3[] newShapePath;
     private Vector2[] newColliderPath;
     private float initialIntensity;
 
-    void Start()
+    void Awake()
     {
         light2D = GetComponent<Light2D>();
         initialIntensity = light2D.intensity;
@@ -56,6 +55,7 @@ public class LightBeam : MonoBehaviour
 
     public void ToggleEnabled(bool enabled)
     {
+        IsActive = enabled;
         light2D.intensity = enabled ? initialIntensity : 0f;
         polygonCollider2D.enabled = enabled;
     }
