@@ -164,7 +164,7 @@ public class PlayerControls : MonoBehaviour
         {
             IsClimbing = true;
         }
-        else if (LastOnGroundTime > 0 && !IsJumping && LastPressedJumpTime > 0)
+        else if (LastOnGroundTime > 0 && !IsJumping && LastPressedJumpTime > 0 && RB.linearVelocityY < 0.01f && RB.linearVelocityY > -0.01f)
         {
             IsJumping = true;
             Jump();
