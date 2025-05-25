@@ -67,7 +67,7 @@ public class PlayerControls : MonoBehaviour
                 faceSprite.material = value ? litMaterial : unlitMaterial;
 
                 isLit = value;
-                OnLitChange(value);
+                OnLitChange?.Invoke(value);
             }
         }
     }
@@ -184,15 +184,12 @@ public class PlayerControls : MonoBehaviour
     {
         if (AttackTimer < 0)
         {
-            Debug.Log("Before");
             AttackTimer = attackCooldown;
             Collider2D[] targets = Physics2D.OverlapCircleAll(_attackCheckPoint.position, _attackRadius, _attackLayer);
-            Debug.Log(targets.Length);
             foreach (Collider2D col in targets)
             {
                 col.GetComponent<IInteractable>()?.OnInteract();
             }
-            Debug.Log("After");
         }
     }
 

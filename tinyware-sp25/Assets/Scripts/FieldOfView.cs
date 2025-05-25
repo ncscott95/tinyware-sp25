@@ -29,7 +29,7 @@ public class FieldOfView : MonoBehaviour
         }
 
         int rayCount = (int)(fov / angleIncrement);
-        float angle = -90f + (fov / 2f);
+        float angle = transform.parent.eulerAngles.z - 90f + (fov / 2f);
 
         int numHits = 0;
         for (int i = 0; i <= rayCount; i++)
