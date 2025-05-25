@@ -329,13 +329,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 553f627427f356c4f9ea2256d80916d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gravityScale: 5
+  gravityScale: 10
   maxFallSpeed: 30
-  runMaxSpeed: 5
+  runMaxSpeed: 10
   runAccelAmount: 50
   runDeccelAmount: 30
-  jumpForce: 14
-  climbMaxSpeed: 3
+  jumpForce: 28
+  climbMaxSpeed: 6
   attackCooldown: 0.5
   coyoteTime: 0.2
   jumpInputBufferTime: 0.2
