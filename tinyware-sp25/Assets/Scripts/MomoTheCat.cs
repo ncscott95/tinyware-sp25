@@ -3,6 +3,7 @@ using UnityEngine;
 public class MomoTheCat : MonoBehaviour
 {
     [SerializeField] private Animator animator;
+    [SerializeField] private bool exitRight = true;
 
     void Start()
     {
@@ -12,6 +13,22 @@ public class MomoTheCat : MonoBehaviour
     void WalkAway()
     {
         animator.SetTrigger("Walk");
-        transform.LeanMoveLocalX(transform.position.x + 10f, 3f);
+        if (exitRight)
+        {
+            transform.LeanMoveLocalX(transform.position.x + 10f, 3f);
+        }
+        else
+        {
+            transform.localScale = new(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
+            transform.LeanMoveLocalX(transform.position.x - 10f, 3f);
+        }
+    }
+
+    void Update()
+    {
+        if (transform.position.y < -100f)
+        {
+            Destroy(this);
+        }
     }
 }
