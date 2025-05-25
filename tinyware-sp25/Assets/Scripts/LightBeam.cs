@@ -1,21 +1,30 @@
+using System.Collections;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.Rendering.Universal;
 
 public class LightBeam : MonoBehaviour
 {
     public Transform Target;
+    public float DimRecoverTime;
     private Light2D light2D;
+    private PolygonCollider2D polygonCollider2D;
     private Vector3[] newShapePath;
+    private Vector2[] newColliderPath;
+    private float initialIntensity;
 
     void Start()
     {
         light2D = GetComponent<Light2D>();
+        initialIntensity = light2D.intensity;
+        polygonCollider2D = GetComponent<PolygonCollider2D>();
         PointAtTarget();
     }
 
     void Update()
     {
         PointAtTarget();
+        if (Input.GetKeyDown(KeyCode.Backspace)) TriggerDim();
     }
 
     private void PointAtTarget()
@@ -29,7 +38,19 @@ public class LightBeam : MonoBehaviour
             new(distance, -0.5f, 0f),
             new(distance, 0.5f, 0f)
         };
+        newColliderPath = new Vector2[] {
+            new(-0.5f, 0.5f),
+            new(-0.5f, -0.5f),
+            new(distance, -0.5f),
+            new(distance, 0.5f)
+        };
         light2D.SetShapePath(newShapePath);
+        polygonCollider2D.SetPath(0, newColliderPath);
         transform.right = offset;
+    }
+
+    public void TriggerDim()
+    {
+        LeanTween.value(0f, initialIntensity, DimRecoverTime).setEaseInExpo().setOnUpdate((float val) => { light2D.intensity = val; });
     }
 }
