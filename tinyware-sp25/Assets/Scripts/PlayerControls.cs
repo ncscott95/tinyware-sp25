@@ -57,7 +57,17 @@ public class PlayerControls : MonoBehaviour
 
     [Header("References")]
     [SerializeField] private SpriteRenderer faceSprite;
+    [SerializeField] private Animator animator;
     [SerializeField] private Material litMaterial, unlitMaterial;
+
+    [Header("Animations")]
+    private const string PLAYER_IDLE = "PlayerIdle";
+    private const string PLAYER_JUMP = "PlayerJump";
+    private const string PLAYER_ATTACK = "PlayerAttack";
+    private const string PLAYER_CLIMB = "PlayerClimb";
+    private const string PLAYER_CLIMB_IDLE = "PlayerClimbIdle";
+    private const string PLAYER_WALK = "PlayerWalk";
+    private string currentState;
 
     private bool isLit;
     public bool IsLit
@@ -148,9 +158,9 @@ public class PlayerControls : MonoBehaviour
 
         if (_moveInputX != 0) CheckDirectionToFace(_moveInputX > 0);
 
+        Collider2D ground = Physics2D.OverlapBox(_groundCheckPoint.position, _groundCheckSize, 0, _groundLayer);
         if (!IsJumping)
         {
-            Collider2D ground = Physics2D.OverlapBox(_groundCheckPoint.position, _groundCheckSize, 0, _groundLayer);
             if (ground != null)
             {
                 LastOnGroundTime = coyoteTime;
@@ -176,6 +186,26 @@ public class PlayerControls : MonoBehaviour
         else RB.gravityScale = gravityScale;
 
         RB.linearVelocity = new Vector2(RB.linearVelocityX, Mathf.Max(RB.linearVelocityY, -maxFallSpeed));
+
+        // Animation Controls
+        if (ground != null)
+        {
+            if (_moveInputX != 0)
+            {
+                // Walk animation
+                ChangeAnimationState(PLAYER_WALK);
+            }
+            else
+            {
+                // Idle animation
+                ChangeAnimationState(PLAYER_IDLE);
+            }
+        }
+
+        if (IsJumping && ground == null)
+        {
+            ChangeAnimationState(PLAYER_JUMP);
+        }
     }
 
     private void FixedUpdate()
@@ -212,6 +242,15 @@ public class PlayerControls : MonoBehaviour
     {
         Vector2 movement = new Vector2(_moveInputX, _moveInputY).normalized;
         RB.linearVelocity = movement * climbMaxSpeed;
+
+        if (RB.linearVelocity.magnitude > 0)
+        {
+            ChangeAnimationState(PLAYER_CLIMB);
+        }
+        else
+        {
+            ChangeAnimationState(PLAYER_CLIMB_IDLE);
+        }
     }
 
     private void Drop(Collider2D platformCol)
@@ -242,6 +281,7 @@ public class PlayerControls : MonoBehaviour
         if (AttackTimer < 0)
         {
             AttackTimer = attackCooldown;
+            ChangeAnimationState(PLAYER_ATTACK);
             // Vector2 attackPos = new(transform.position.x + (transform.localScale.x * 0.5f), transform.position.y);
             Collider2D[] targets = Physics2D.OverlapCircleAll(_attackCheckPoint.position, _attackRadius, _attackLayer);
             foreach (Collider2D col in targets)
@@ -263,5 +303,15 @@ public class PlayerControls : MonoBehaviour
         // Respawn?
         // SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         transform.position = _startPosition;
+    }
+
+    public void ChangeAnimationState(string newState)
+    {
+        Debug.Log(currentState);
+        if (currentState == newState) return;
+
+        animator.Play(newState);
+
+        currentState = newState;
     }
 }
