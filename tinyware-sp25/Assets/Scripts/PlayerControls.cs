@@ -55,6 +55,7 @@ public class PlayerControls : MonoBehaviour
 
     [Header("Death")]
     public float lightDeathThreshold;
+    private bool IsDead;
 
     [Header("References")]
     [SerializeField] private SpriteRenderer faceSprite;
@@ -68,6 +69,7 @@ public class PlayerControls : MonoBehaviour
     private const string PLAYER_CLIMB = "PlayerClimb";
     private const string PLAYER_CLIMB_IDLE = "PlayerClimbIdle";
     private const string PLAYER_WALK = "PlayerWalk";
+    private const string PLAYER_DEATH = "PlayerDeath";
     private string currentState;
 
     private bool isLit;
@@ -100,6 +102,7 @@ public class PlayerControls : MonoBehaviour
         RB = GetComponent<Rigidbody2D>();
         Inputs = new InputSystem_Actions();
         Inputs.Player.Enable();
+        IsDead = false;
     }
 
     private void OnEnable()
@@ -183,7 +186,7 @@ public class PlayerControls : MonoBehaviour
 
         if (!CanClimb || !Inputs.Player.Jump.IsPressed()) IsClimbing = false;
 
-        if (IsClimbing) RB.gravityScale = 0f;
+        if (IsClimbing || IsDead) RB.gravityScale = 0f;
         else RB.gravityScale = gravityScale;
 
         RB.linearVelocity = new Vector2(RB.linearVelocityX, Mathf.Max(RB.linearVelocityY, -maxFallSpeed));
@@ -300,8 +303,10 @@ public class PlayerControls : MonoBehaviour
 
     public void Death()
     {
-        // TODO: Death animation
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        IsDead = true;
+        RB.linearVelocity = Vector2.zero;
+        Inputs.Player.Disable();
+        ChangeAnimationState(PLAYER_DEATH);
     }
 
     public void ChangeAnimationState(string newState)
