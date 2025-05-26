@@ -25,6 +25,6 @@ public class EndScreenManager : MonoBehaviour
 
     public void OnButtonAdvance()
     {
-        CrossFade.Instance.FadeOut(5);
+        CrossFade.Instance.FadeOut(0);
     }
 }

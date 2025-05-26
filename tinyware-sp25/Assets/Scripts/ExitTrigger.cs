@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class ExitTrigger : MonoBehaviour
 {
@@ -14,18 +13,17 @@ public class ExitTrigger : MonoBehaviour
         // Transition out of scene
         if (collision.GetComponent<PlayerControls>() != null)
         {
-            if (nextScene > 0 && nextScene < 5)
+            if (nextScene > 1 && nextScene < 6)
             {
                 // leaving box, just starting a level
                 PlayerPrefs.SetInt(LEVEL_ENTERED_KEY, PlayerPrefs.GetInt(LEVEL_COMPLETE_KEY) + 1);
                 nextScene = PlayerPrefs.GetInt(LEVEL_ENTERED_KEY);
             }
-            else if (nextScene == 0)
+            else if (nextScene == 1)
             {
                 // returning to box, just completed a level
                 PlayerPrefs.SetInt(LEVEL_COMPLETE_KEY, PlayerPrefs.GetInt(LEVEL_ENTERED_KEY));
             }
-            Debug.Log($"Entered: {PlayerPrefs.GetInt(LEVEL_ENTERED_KEY)}  Complete: {PlayerPrefs.GetInt(LEVEL_COMPLETE_KEY)}");
 
             CrossFade.Instance.FadeOut(nextScene);
         }
