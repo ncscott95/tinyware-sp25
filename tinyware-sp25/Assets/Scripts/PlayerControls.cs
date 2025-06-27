@@ -70,6 +70,7 @@ public class PlayerControls : MonoBehaviour
     private const string PLAYER_CLIMB_IDLE = "PlayerClimbIdle";
     private const string PLAYER_WALK = "PlayerWalk";
     private const string PLAYER_DEATH = "PlayerDeath";
+    private const string PLAYER_DEATH_TRIGGER = "IsDeadTrigger";
     private string currentState;
 
     private bool isLit;
@@ -304,8 +305,9 @@ public class PlayerControls : MonoBehaviour
     public void Death()
     {
         IsDead = true;
-        RB.linearVelocity = Vector2.zero;
         Inputs.Player.Disable();
+        RB.bodyType = RigidbodyType2D.Kinematic;
+        RB.linearVelocity = Vector2.zero;
         ChangeAnimationState(PLAYER_DEATH);
     }
 
@@ -313,7 +315,14 @@ public class PlayerControls : MonoBehaviour
     {
         if (currentState == newState) return;
 
-        animator.Play(newState);
+        if (newState == PLAYER_DEATH)
+        {
+            animator.SetTrigger(PLAYER_DEATH_TRIGGER);
+        }
+        else
+        {
+            animator.Play(newState);
+        }
 
         currentState = newState;
     }
